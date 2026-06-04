@@ -10,7 +10,7 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne
     private Court court;
@@ -18,11 +18,14 @@ public class Reservation {
     @ManyToOne
     private User user;
     
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private LocalDateTime creationTime;
 
     @Enumerated(EnumType.STRING)
     private GameType gameType;
+
+    private boolean deleted = false;
 
     public static enum GameType{
         SINGLE, DOUBLE

@@ -7,11 +7,11 @@ import jakarta.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(unique = true)
     private String phoneNumber;
 
     private String name;
-
+    private boolean deleted = false;
 }

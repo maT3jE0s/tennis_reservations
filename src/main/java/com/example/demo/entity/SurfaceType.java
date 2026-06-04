@@ -8,7 +8,8 @@ public class SurfaceType {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
     private int pricePerMinute;
+    private boolean deleted = false;
 }
