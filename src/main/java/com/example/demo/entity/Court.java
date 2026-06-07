@@ -1,21 +1,24 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "courts")
-public class Court {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private int courtNumber;
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Court extends BaseEntity {
+
+    @Column(unique = true)
+    private Integer courtNumber;
 
     @ManyToOne
     private SurfaceType surfaceType;
-
-    private boolean deleted = false;
 }

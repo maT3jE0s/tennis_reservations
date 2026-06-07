@@ -2,43 +2,46 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.demo.dto.CourtRequest;
 import com.example.demo.entity.Court;
 import com.example.demo.service.CourtService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/courts")
+@RequiredArgsConstructor
 public class CourtController {
-    private final CourtService service;
+    private final CourtService courtService;
 
-    public CourtController(CourtService service) {
-        this.service = service;
+    @PostMapping
+    public ResponseEntity<Court> create(@RequestBody CourtRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(courtService.create(request));
     }
 
     @GetMapping
-    public List<Court> getAll() {
-        return service.getAll();
+    public ResponseEntity<List<Court>> getAll() {
+        return ResponseEntity.ok(courtService.getAll());
     }
 
     @GetMapping("/{id}")
-    public Court getById(@PathVariable Long id) {
-        return service.getById(id);
-    }
-
-    @PostMapping
-    public Court create(@RequestBody Court court) {
-        return service.save(court);
+    public ResponseEntity<Court> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(courtService.getById(id));
     }
 
     @PutMapping("/{id}")
-    public Court update(@PathVariable Long id, @RequestBody Court court) {
-        court.setId(id);
-        return service.save(court);
+    public ResponseEntity<Court> update(@PathVariable Long id, @RequestBody CourtRequest request) {
+        return ResponseEntity.ok(courtService.update(id, request));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        courtService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

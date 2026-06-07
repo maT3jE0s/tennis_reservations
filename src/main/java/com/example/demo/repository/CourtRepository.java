@@ -1,32 +1,26 @@
 package com.example.demo.repository;
 
-import org.springframework.stereotype.Repository;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import com.example.demo.entity.Court;
-
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.demo.entity.Court;
+
 @Repository
-public class CourtRepository {
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    public Court findById(Long id) {
-        return entityManager.find(Court.class, id);
+@Transactional
+public class CourtRepository extends BaseRepository<Court> {
+    
+    public CourtRepository() {
+        super(Court.class);
     }
 
-    public List<Court> findAll() {
-        return entityManager.createQuery("SELECT c FROM Court c where c.deleted = false",
-            Court.class).getResultList();
-    }
-
-    public void save(Court court) {
-        if (court.getId() == null) {
-            entityManager.persist(court);
-        } else {
-            entityManager.merge(court);
-        }
+    @Transactional(readOnly = true)
+    public Court findByCourtNumber(Integer courtNumber) {
+        List<Court> results = em.createQuery("SELECT c FROM Court c WHERE c.courtNumber = :number AND c.deleted = false",
+        Court.class)
+        .setParameter("number", courtNumber)
+        .getResultList();
+        return results.isEmpty() ? null : results.get(0);
     }
 }
