@@ -220,6 +220,7 @@ public class ReservationServiceTest {
 
     @Test
     void testDelete() {
+        when(reservationRepository.findById(1L)).thenReturn(reservation);
         reservationService.delete(1L);
         verify(reservationRepository).delete(1L);
     }

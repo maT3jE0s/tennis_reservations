@@ -18,6 +18,7 @@ import com.example.demo.dto.ReservationRequest;
 import com.example.demo.entity.Reservation;
 import com.example.demo.service.ReservationService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;;
 
 @RestController
@@ -27,7 +28,7 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping
-    public ResponseEntity<Reservation> create(@RequestBody ReservationRequest request) {
+    public ResponseEntity<Reservation> create(@Valid @RequestBody ReservationRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(reservationService.create(request));
     }
@@ -48,7 +49,7 @@ public class ReservationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Reservation> update(@PathVariable Long id, @RequestBody ReservationRequest request) {
+    public ResponseEntity<Reservation> update(@PathVariable Long id, @Valid @RequestBody ReservationRequest request) {
         return ResponseEntity.ok(reservationService.update(id, request));
     }
 

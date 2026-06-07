@@ -13,8 +13,6 @@ import com.example.demo.repository.SurfaceTypeRepository;
 
 import lombok.RequiredArgsConstructor;
 
-// TODO when id is used it is necessary to check whether the court with this id exists
-
 @Service
 @RequiredArgsConstructor
 public class CourtService {
@@ -45,14 +43,13 @@ public class CourtService {
 
     @Transactional(readOnly = true)
     public Court getById(Long id) {
+        requireCourt(id);
         return courtRepository.findById(id);
     }
 
     @Transactional
     public Court update(Long id, CourtRequest request) {
-        Court court = courtRepository.findById(id);
-        if (court == null)
-            throw new RuntimeException("Court with id " + id + " does not exist");
+        Court court = requireCourt(id);
 
         SurfaceType surfaceType = surfaceTypeRepository.findById(request.getSurfaceTypeId());
         if (surfaceType == null)
@@ -70,6 +67,15 @@ public class CourtService {
 
     @Transactional
     public void delete(Long id) {
+        requireCourt(id);
         courtRepository.delete(id);
+    }
+
+    private Court requireCourt(Long id) {
+        Court court = courtRepository.findById(id);
+        if (court == null)
+            throw new RuntimeException("Court with id " + id + " does not exist");
+        
+        return court;
     }
 }

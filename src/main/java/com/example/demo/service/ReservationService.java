@@ -49,6 +49,7 @@ public class ReservationService {
 
     @Transactional(readOnly = true)
     public Reservation getById(Long id) {
+        requireReservation(id);
         return reservationRepository.findById(id);
     }
 
@@ -64,10 +65,7 @@ public class ReservationService {
 
     @Transactional
     public Reservation update(Long id, ReservationRequest request) {
-        Reservation reservation = reservationRepository.findById(id);
-        if (reservation == null)
-            throw new RuntimeException("Reservation does not exist");
-
+        Reservation reservation = requireReservation(id);
         Court court = requireCourt(request);
 
         checkTimeInterval(court.getId(), request, id);
@@ -86,6 +84,7 @@ public class ReservationService {
 
     @Transactional
     public void delete(Long id) {
+        requireReservation(id);
         reservationRepository.delete(id);
     }
 
@@ -98,6 +97,14 @@ public class ReservationService {
         }
 
         return base;
+    }
+
+    private Reservation requireReservation(Long id) {
+        Reservation reservation = reservationRepository.findById(id);
+        if (reservation == null)
+            throw new RuntimeException("Reservation does not exist");
+
+        return reservation;
     }
 
     private Court requireCourt(ReservationRequest request) {

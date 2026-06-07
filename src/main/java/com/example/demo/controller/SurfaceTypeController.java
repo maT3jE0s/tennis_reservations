@@ -10,6 +10,7 @@ import com.example.demo.dto.SurfaceTypeRequest;
 import com.example.demo.entity.SurfaceType;
 import com.example.demo.service.SurfaceTypeService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -19,7 +20,7 @@ public class SurfaceTypeController {
     private final SurfaceTypeService surfaceTypeService;
 
     @PostMapping
-    public ResponseEntity<SurfaceType> create(@RequestBody SurfaceTypeRequest request) {
+    public ResponseEntity<SurfaceType> create(@Valid @RequestBody SurfaceTypeRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(surfaceTypeService.create(request));
     }
@@ -35,7 +36,7 @@ public class SurfaceTypeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SurfaceType> update(@PathVariable Long id, @RequestBody SurfaceTypeRequest request) {
+    public ResponseEntity<SurfaceType> update(@PathVariable Long id, @Valid @RequestBody SurfaceTypeRequest request) {
         return ResponseEntity.ok(surfaceTypeService.update(id, request));
     }
 

@@ -36,14 +36,13 @@ public class SurfaceTypeService {
 
     @Transactional(readOnly = true)
     public SurfaceType getById(Long id) {
+        requireSurfaceType(id);
         return surfaceTypeRepository.findById(id);
     }
 
     @Transactional
     public SurfaceType update(Long id, SurfaceTypeRequest request) {
-        SurfaceType surfaceType = surfaceTypeRepository.findById(id);
-        if (surfaceType == null)
-            throw new RuntimeException("Surface type with id " + id + " does not exist");
+        SurfaceType surfaceType = requireSurfaceType(id);
 
         SurfaceType toUpdate = surfaceTypeRepository.findByName(request.getName());
 
@@ -57,6 +56,15 @@ public class SurfaceTypeService {
 
     @Transactional
     public void delete(Long id) {
+        requireSurfaceType(id);
         surfaceTypeRepository.delete(id);
+    }
+
+    private SurfaceType requireSurfaceType(Long id) {
+        SurfaceType surfaceType = surfaceTypeRepository.findById(id);
+        if (surfaceType == null)
+            throw new RuntimeException("Surface type with id " + id + " does not exist");
+
+        return surfaceType;
     }
 }

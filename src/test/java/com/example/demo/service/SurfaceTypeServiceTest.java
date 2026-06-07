@@ -140,6 +140,7 @@ public class SurfaceTypeServiceTest {
 
     @Test
     void testDelete() {
+        when(surfaceTypeRepository.findById(1L)).thenReturn(surfaceType);
         surfaceTypeService.delete(1L);
         verify(surfaceTypeRepository).delete(1L);
     }

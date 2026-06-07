@@ -10,6 +10,7 @@ import com.example.demo.dto.CourtRequest;
 import com.example.demo.entity.Court;
 import com.example.demo.service.CourtService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -19,7 +20,7 @@ public class CourtController {
     private final CourtService courtService;
 
     @PostMapping
-    public ResponseEntity<Court> create(@RequestBody CourtRequest request) {
+    public ResponseEntity<Court> create(@Valid @RequestBody CourtRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(courtService.create(request));
     }
@@ -35,7 +36,7 @@ public class CourtController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Court> update(@PathVariable Long id, @RequestBody CourtRequest request) {
+    public ResponseEntity<Court> update(@PathVariable Long id, @Valid @RequestBody CourtRequest request) {
         return ResponseEntity.ok(courtService.update(id, request));
     }
 

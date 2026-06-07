@@ -179,6 +179,7 @@ public class CourtServiceTest {
 
     @Test
     void testDelete() {
+        when(courtRepository.findById(1L)).thenReturn(court);
         courtService.delete(1L);
         verify(courtRepository).delete(1L);
     }
