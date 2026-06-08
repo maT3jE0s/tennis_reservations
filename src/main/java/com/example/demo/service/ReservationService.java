@@ -19,15 +19,30 @@ import com.example.demo.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Service layer responsible for managing tennis court reservations.
+ *
+ * Contains core business logic such as:
+ * - validation of time intervals (no overlaps allowed)
+ * - automatic user creation based on phone number
+ * - price calculation based on surface type and game type
+ */
 @Service
 @RequiredArgsConstructor
 public class ReservationService {
+
     private static final double DOUBLES_MULTIPLIER = 1.5;
 
     private final ReservationRepository reservationRepository;
     private final CourtRepository courtRepository;
     private final UserRepository userRepository;
 
+    /**
+     * Creates a new reservation with validation and price calculation.
+     *
+     * @param request reservation input data
+     * @return created reservation
+     */
     @Transactional
     public Reservation create(ReservationRequest request) {
         Court court = requireCourt(request);
@@ -48,21 +63,48 @@ public class ReservationService {
         return reservationRepository.save(reservation);
     }
 
+    /**
+     * Retrieves reservation by ID.
+     *
+     * @param id reservation identifier
+     * @return reservation entity
+     */
     @Transactional(readOnly = true)
     public Reservation getById(Long id) {
         return requireReservation(id);
     }
 
+    /**
+     * Returns reservations for a specific court.
+     *
+     * @param courtNumber court number
+     * @return list of reservations
+     */
     @Transactional(readOnly = true)
     public List<Reservation> getByCourtNumber(Integer courtNumber) {
         return reservationRepository.findByCourtNumber(courtNumber);
     }
 
+    /**
+     * Returns reservations filtered by customer phone number.
+     * Optionally returns only future reservations.
+     *
+     * @param phoneNumber customer phone number
+     * @param futureOnly if true, returns only upcoming reservations
+     * @return list of reservations
+     */
     @Transactional(readOnly = true)
     public List<Reservation> getByPhoneNumber(String phoneNumber, boolean futureOnly) {
         return reservationRepository.findByPhoneNumber(phoneNumber, futureOnly);
     }
 
+    /**
+     * Updates an existing reservation with validation and recalculated price.
+     *
+     * @param id reservation identifier
+     * @param request updated reservation data
+     * @return updated reservation
+     */
     @Transactional
     public Reservation update(Long id, ReservationRequest request) {
         Reservation reservation = requireReservation(id);
@@ -82,6 +124,11 @@ public class ReservationService {
         return reservationRepository.save(reservation);
     }
 
+    /**
+     * Soft deletes a reservation.
+     *
+     * @param id reservation identifier
+     */
     @Transactional
     public void delete(Long id) {
         requireReservation(id);

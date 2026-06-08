@@ -11,6 +11,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Entity representing a tennis court reservation.
+ * Contains booking time interval, customer, court and pricing information.
+ * Supports single and double game types with different pricing rules.
+ */
 @Entity
 @Table(name = "reservations")
 @Getter
@@ -37,6 +42,10 @@ public class Reservation extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private GameType gameType;
 
+    /**
+     * Indicates whether a reservation is for a singles or doubles match.
+     * Doubles reservations incur a 1.5× price multiplier.
+     */
     public static enum GameType{
         SINGLE, DOUBLE
     }

@@ -14,16 +14,28 @@ import com.example.demo.repository.SurfaceTypeRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Service layer for managing tennis courts.
+ * Handles business logic such as uniqueness validation
+ * and surface type assignment.
+ */
 @Service
 @RequiredArgsConstructor
 public class CourtService {
+
     private final CourtRepository courtRepository;
     private final SurfaceTypeRepository surfaceTypeRepository;
 
+    /**
+     * Creates a new court with validation of uniqueness and surface type existence.
+     *
+     * @param request court data
+     * @return created court
+     */
     @Transactional
     public Court create(CourtRequest request) {
         if (courtRepository.findByCourtNumber(request.getCourtNumber()) != null)
-            throw new IllegalArgumentException("Court with number " + request.getCourtNumber() + " already exists");
+            throw new IllegalArgumentException("Court with number " +request.getCourtNumber() + " already exists");
 
         SurfaceType surfaceType = requireSurfaceType(request.getSurfaceTypeId());
 
@@ -35,16 +47,34 @@ public class CourtService {
         return courtRepository.save(court);
     }
 
+    /**
+     * Returns all courts.
+     *
+     * @return list of courts
+     */
     @Transactional(readOnly = true)
     public List<Court> getAll() {
         return courtRepository.findAll();
     }
 
+    /**
+     * Retrieves court by ID.
+     *
+     * @param id court identifier
+     * @return court entity
+     */
     @Transactional(readOnly = true)
     public Court getById(Long id) {
         return requireCourt(id);
     }
 
+    /**
+     * Updates an existing court with validation of uniqueness.
+     *
+     * @param id court identifier
+     * @param request updated court data
+     * @return updated court
+     */
     @Transactional
     public Court update(Long id, CourtRequest request) {
         Court court = requireCourt(id);
@@ -61,6 +91,11 @@ public class CourtService {
         return courtRepository.save(court);
     }
 
+    /**
+     * Soft deletes a court.
+     *
+     * @param id court identifier
+     */
     @Transactional
     public void delete(Long id) {
         requireCourt(id);

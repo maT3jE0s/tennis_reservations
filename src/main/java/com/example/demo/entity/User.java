@@ -7,6 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Entity representing a system user (customer).
+ * Users are identified uniquely by their phone number.
+ */
 @Entity
 @Table(name = "users")
 @Getter

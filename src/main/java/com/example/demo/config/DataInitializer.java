@@ -12,10 +12,15 @@ import com.example.demo.repository.SurfaceTypeRepository;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Initializes demo data on application startup when enabled in configuration.
+ * Creates default surface types and tennis courts.
+ */
 @Component
 @ConditionalOnProperty(name = "app.data-initialization", havingValue = "true")
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
+
     private final SurfaceTypeRepository surfaceTypeRepository;
     private final CourtRepository courtRepository;
 

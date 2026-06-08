@@ -7,6 +7,10 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Base entity class providing common fields for all entities.
+ * Includes primary key and soft delete flag.
+ */
 @Getter
 @Setter
 @MappedSuperclass

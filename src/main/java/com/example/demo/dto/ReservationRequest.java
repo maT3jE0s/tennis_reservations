@@ -11,6 +11,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Request body for creating or updating a tennis court reservation.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
